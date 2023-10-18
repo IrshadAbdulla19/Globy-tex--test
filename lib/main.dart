@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:globytex/application/Home/home_bloc.dart';
+import 'package:globytex/domain/core/di/injectable.dart';
 import 'presentation/home/home_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configInjection();
   runApp(MyApp());
 }
 
@@ -11,8 +15,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomeScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<HomeBloc>(),
+        ),
+      ],
+      child: MaterialApp(
+        home: HomeScreen(),
+      ),
     );
   }
 }
